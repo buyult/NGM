@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch
 from torchdiffeq import odeint_adjoint as odeint
 import matplotlib.pyplot as plt
-torch.manual_seed(0)
+torch.manual_seed(4)
 import os
 def multsum(x0):
     sum=0
