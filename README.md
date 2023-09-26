@@ -11,7 +11,7 @@ NGM2.py shows the code from Subsection 4.2.
 
 - When using time delay NGM, you can modify lr, number of neurons, and adjust the termination iteration conditions based on different datasets.
 ### Attention
-- **The raw data is sourced from a third-party organization. To use the CO2 emissions dataset you need to visit the link and request access to the data, you can download the latest raw dataset.**
+**The raw data is sourced from a third-party organization. To use the CO2 emissions dataset you need to visit the link and request access to the data, you can download the latest raw dataset.**
 
-  1. CO2 emissions dataset: http://meicmodel.org.cn/?page_id=2345
-  2. gasoline consumption in China: https://data.stats.gov.cn/easyquery.htm?cn=C01
+  - CO2 emissions dataset: http://meicmodel.org.cn/?page_id=2345
+  - gasoline consumption in China: https://data.stats.gov.cn/easyquery.htm?cn=C01
