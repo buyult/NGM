@@ -5,9 +5,6 @@ from torchdiffeq import odeint_adjoint as odeint
 import matplotlib.pyplot as plt
 torch.manual_seed(0)
 import os
-# os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
-#np.set_printoptions(suppress=True)#取消科学计数法
-#计算累加数列
 def multsum(x0):
     sum=0
     x1=np.zeros(len(x0))
@@ -15,14 +12,13 @@ def multsum(x0):
         sum = x0[i]+sum
         x1[i] = sum
     return x1
-#计算累减数列
 def multisub(x1):
     b = np.zeros(len(x1))
     b[0] = x1[0]
     for i in range(1,len(x1)):
         b[i]= x1[i]-x1[i-1]
     return b
-#计算MAPE
+#MAPE
 def err(data, pre_x0, x0):
     sam_nums = len(x0)
     total_err1 = np.sum(np.abs(data[1:sam_nums]-pre_x0[1:sam_nums])/data[1:sam_nums])
@@ -37,7 +33,7 @@ class Cat(nn.Module):
             input_size=input_size,
             hidden_size=hidden_size,
             num_layers=1,
-            batch_first=True  # 输入维度[batch_size, seq_len, feature_len]
+            batch_first=True
         )
     def forward(self,t, x):
         tt = torch.ones_like(x[:, :, :])*t
@@ -80,7 +76,7 @@ class ODEBlock(nn.Module):
         self.tol = 1e-5
     def forward(self, x, tsteps):
         integration_time = torch.Tensor(tsteps).float()
-        integration_time = integration_time.type_as(x)   #将积分时间类型转换为x的数据类型一致
+        integration_time = integration_time.type_as(x)
         out = odeint(self.odefunc, x, integration_time, rtol=self.tol, atol=self.tol, method='euler')
         return out
 
@@ -93,7 +89,7 @@ def plot_pre(pred_x,true_x):
     plt.show()
 def train(model, iteration, samp_nums, x1, u0, lr=0.01):
     criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)  #
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     end = samp_nums
     time_steps = np.arange(0, end)
     true_x1 = torch.Tensor(x1[0:end])
@@ -115,12 +111,11 @@ def train(model, iteration, samp_nums, x1, u0, lr=0.01):
 
 
 if __name__ == '__main__':
-    #数据
+    #data
     x0 = np.array([0.32587,0.35735,0.40703,0.46562,0.54914,0.61056,0.67911,0.71666, 0.75836, 0.82847, 0.92694, 0.95393, 0.9374, 0.94487])
     test = np.array([0.93869, 0.94592, 0.96989, 0.98561, 1.01189, 1.00517, 1.04507])
-    data = np.append(x0,test,axis=0)#总的数据
-    x1 = multsum(data)#一阶累加序列x1(t)
-    #print(ode_data)
+    data = np.append(x0,test,axis=0)
+    x1 = multsum(data)
     u0 = torch.FloatTensor([[[0.32587]]])
     print(u0.shape)
     datasize = len(data)
